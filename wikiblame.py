@@ -27,8 +27,8 @@ def main():
             commit(tempdir, r)
 
         Popen(['gitk'], cwd=tempdir)
-        run(['git', 'blame', tempdir + '/article'], cwd=tempdir)
-        input(f'\n\nPress enter to remove the temporal repository at {tempdir}')
+        run(['git', 'blame', 'article'], cwd=tempdir)
+        input(f'\nPress enter to remove the temporal repository at {tempdir}')
 
 
 def get_args():
@@ -43,9 +43,8 @@ def get_args():
 
 def commit(dirname, revision):
     "Add revision as commit into a git-tracked directory at dirname"
-    content = wrap(revision['*'])
-    open(dirname + '/article', 'wt').write(content)
-    run(['git', 'add', dirname + '/article'], cwd=dirname)
+    open(dirname + '/article', 'wt').write(wrap(revision['*']))
+    run(['git', 'add', 'article'], cwd=dirname)
     run(['git', 'commit', '--message', revision.get('comment', '') or '<empty>',
          '--author', revision.get('user', '') + ' <no email>',
          '--date', time.asctime(revision['timestamp'])], cwd=dirname)
