@@ -54,7 +54,7 @@ def wrap(text, maxsize=70):
     "Return text wrapped so lines have at most maxsize characters"
     shorter_lines = []
     for line in text.splitlines():
-        while len(line) > 70:
+        while len(line) > maxsize:
             i = (line.rfind(' ', 0, maxsize) + 1) or maxsize
             shorter_lines.append(line[:i])
             line = line[i:]
