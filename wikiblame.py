@@ -27,6 +27,11 @@ def main():
             commit(tempdir, r)
 
         Popen(['gitk'], cwd=tempdir)
+        Popen(['emacs', '-eval',
+               '(progn'
+               '  (find-file "article")'
+               '  (vc-annotate "article" "HEAD")'
+               '  (delete-other-windows))'], cwd=tempdir)
         run(['git', 'blame', 'article'], cwd=tempdir)
         input(f'\nPress enter to remove the temporal repository at {tempdir}')
 
