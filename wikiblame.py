@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 """
-Convert a wikipedia article to a git repository and run gitk and git blame.
+Convert a wikipedia article to a git repository and explore it with emacs in
+version control mode (vs-annotate). Optionally run gitk and git blame too.
 
 This is a much nicer way to find out where certain changes happened in a
 wiki page.
@@ -21,19 +22,21 @@ def main():
     args = get_args()
     revisions = mwclient.Site(args.site).Pages[args.article].revisions
     with tempfile.TemporaryDirectory() as tempdir:
-        run(['git', 'init'], cwd=tempdir)
+        run(['git', 'init', '-b', 'master'], cwd=tempdir)
         for r in revisions(start=args.start, limit=args.limit, dir='newer',
                            prop='content|comment|user|timestamp'):
             commit(tempdir, r)
 
-        Popen(['gitk'], cwd=tempdir)
-        Popen(['emacs', '-eval',
-               '(progn'
-               '  (find-file "article")'
-               '  (vc-annotate "article" "HEAD")'
-               '  (delete-other-windows))'], cwd=tempdir)
-        run(['git', 'blame', 'article'], cwd=tempdir)
-        input(f'\nPress enter to remove the temporal repository at {tempdir}')
+        Popen(launch_emacs_with_git_blame, cwd=tempdir)
+
+        if args.gitk:
+            Popen(['gitk'], cwd=tempdir)
+
+        if args.git_blame:
+            run(['git', 'blame', 'article'], cwd=tempdir)
+
+        print(f'\nDirectory with the history as a git repository: {tempdir}')
+        input(f'Press enter to remove the temporal directory... ')  # pauses
 
 
 def get_args():
@@ -43,6 +46,8 @@ def get_args():
     add('--start', default='2019-01-01T00:00:00Z', help='oldest revision date')
     add('--limit', type=int, default=50, help='maximum number of revisions')
     add('--site', default='en.wikipedia.org', help='wikimedia site to access')
+    add('--gitk', action='store_true', help='see repository with gitk')
+    add('--git-blame', action='store_true', help='see history with git blame')
     return parser.parse_args()
 
 
@@ -65,6 +70,14 @@ def wrap(text, maxsize=70):
             line = line[i:]
         shorter_lines.append(line)
     return '\n'.join(shorter_lines)
+
+
+launch_emacs_with_git_blame = [
+    'emacs', '-eval',
+        '(progn'
+        '  (find-file "article")'
+        '  (vc-annotate "article" "HEAD")'
+        '  (delete-other-windows))']
 
 
 
