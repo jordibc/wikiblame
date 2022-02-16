@@ -2,7 +2,7 @@
 
 """
 Convert a wikipedia article to a git repository and explore it with emacs in
-version control mode (vs-annotate). Optionally run gitk and git blame too.
+version control mode (vc-annotate). Optionally run gitk and git blame too.
 
 This is a much nicer way to find out where certain changes happened in a
 wiki page.
