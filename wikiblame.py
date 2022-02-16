@@ -25,7 +25,10 @@ def main():
         run(['git', 'init', '-b', 'master'], cwd=tempdir)
         for r in revisions(start=args.start, limit=args.limit, dir='newer',
                            prop='content|comment|user|timestamp'):
-            commit(tempdir, r)
+            if '*' in r:
+                commit(tempdir, r)
+            else:
+                print(f'\nSkipping revision without content: {dict(r)}\n')
 
         Popen(launch_emacs_with_git_blame, cwd=tempdir)
 
