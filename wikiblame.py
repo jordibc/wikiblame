@@ -23,12 +23,12 @@ def main():
     revisions = mwclient.Site(args.site).Pages[args.article].revisions
     with tempfile.TemporaryDirectory() as tempdir:
         run(['git', 'init', '-b', 'master'], cwd=tempdir)
-        for r in revisions(start=args.start, limit=args.limit, dir='newer',
-                           prop='content|comment|user|timestamp'):
-            if '*' in r:
-                commit(tempdir, r)
+        for rev in revisions(start=args.start, limit=args.limit, dir='newer',
+                             prop='content|comment|user|timestamp'):
+            if '*' in rev:  # key "*" is for the contents of the article
+                commit(rev, tempdir)
             else:
-                print(f'\nSkipping revision without content: {dict(r)}\n')
+                print(f'\nSkipping revision without content: {dict(rev)}\n')
 
         Popen(launch_emacs_with_git_blame, cwd=tempdir)
 
@@ -54,8 +54,8 @@ def get_args():
     return parser.parse_args()
 
 
-def commit(dirname, revision):
-    "Add revision as commit into a git-tracked directory at dirname"
+def commit(revision, dirname='/tmp'):
+    "Add revision as a git commit in directory dirname"
     open(dirname + '/article', 'wt').write(wrap(revision['*']))
     run(['git', 'add', 'article'], cwd=dirname)
     run(['git', 'commit', '--message', revision.get('comment', '') or '<empty>',
