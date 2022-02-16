@@ -38,8 +38,8 @@ def main():
         if args.git_blame:
             run(['git', 'blame', 'article'], cwd=tempdir)
 
-        print(f'\nDirectory with the history as a git repository: {tempdir}')
-        input(f'Press enter to remove the temporal directory... ')  # pauses
+        print('\nDirectory with the history as a git repository:', tempdir)
+        input('Press enter to remove the temporal directory... ')  # pauses
 
 
 def get_args():
