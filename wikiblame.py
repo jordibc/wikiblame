@@ -23,8 +23,8 @@ def main():
     revisions = mwclient.Site(args.site).Pages[args.article].revisions
     with tempfile.TemporaryDirectory() as tempdir:
         run(['git', 'init', '-b', 'master'], cwd=tempdir)
-        for rev in revisions(start=args.start, limit=args.limit, dir='newer',
-                             prop='content|comment|user|timestamp'):
+        for rev in revisions(start=args.start, end=args.end, limit=args.limit,
+                             dir='newer', prop='content|comment|user|timestamp'):
             if '*' in rev:  # key "*" is for the contents of the article
                 commit(rev, tempdir)
             else:
@@ -47,6 +47,7 @@ def get_args():
     add = parser.add_argument
     add('article', help='name of the wikipedia article')
     add('--start', default='2019-01-01T00:00:00Z', help='oldest revision date')
+    add('--end', help='newest revision date (latest revision if not set)')
     add('--limit', type=int, default=50, help='maximum number of revisions')
     add('--site', default='en.wikipedia.org', help='wikimedia site to access')
     add('--gitk', action='store_true', help='see repository with gitk')
