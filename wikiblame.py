@@ -20,7 +20,9 @@ import mwclient
 
 def main():
     args = get_args()
+
     revisions = mwclient.Site(args.site).Pages[args.article].revisions
+
     with tempfile.TemporaryDirectory() as tempdir:
         run(['git', 'init', '-b', 'master'], cwd=tempdir)
         for rev in revisions(start=args.start, end=args.end, limit=args.limit,
@@ -45,6 +47,7 @@ def main():
 def get_args():
     parser = ArgumentParser(description=__doc__, formatter_class=fmt)
     add = parser.add_argument
+
     add('article', help='name of the wikipedia article')
     add('--start', default='2019-01-01T00:00:00Z', help='oldest revision date')
     add('--end', help='newest revision date (latest revision if not set)')
@@ -52,6 +55,7 @@ def get_args():
     add('--site', default='en.wikipedia.org', help='wikimedia site to access')
     add('--gitk', action='store_true', help='see repository with gitk')
     add('--git-blame', action='store_true', help='see history with git blame')
+
     return parser.parse_args()
 
 
