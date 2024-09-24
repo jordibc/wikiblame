@@ -47,13 +47,12 @@ positional arguments:
   article        name of the wikipedia article
 
 options:
-  -h, --help          show this help message and exit
+  -h, --help           show this help message and exit
   -n N, --revisions N  number of revisions
-  --revisions N       number of revisions
-  --oldest TIMESTAMP  oldest revision, like 2022-01-01T00:00:00Z
-  --newest TIMESTAMP  newest revision (latest if not set)
-  --site SITE         wikimedia site to access (default: en.wikipedia.org)
-  -v, --verbose       show retrieved revisions
+  --oldest TIMESTAMP   oldest revision, like 2022-01-01T00:00:00Z
+  --newest TIMESTAMP   newest revision (latest if not set)
+  --site SITE          wikimedia site to access (default: en.wikipedia.org)
+  -v, --verbose        show retrieved revisions
 ```
 
 
