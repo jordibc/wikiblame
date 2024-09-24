@@ -9,7 +9,7 @@ This is a much nicer way to find out where certain changes happened in
 a wiki page.
 
 
-## Dependencies
+## 🔋 Dependencies
 
 Wikiblame uses the [mwclient](https://github.com/mwclient/mwclient)
 module to communicate with the MediaWiki API.
@@ -21,8 +21,11 @@ Debian), but you can also install it with:
 pip install mwclient
 ```
 
+It also uses [git](https://git-scm.com/) to create a local repository
+with one commit per revision of the article.
 
-## Usage
+
+## 📖 Usage
 
 ```
 usage: wikiblame.py [-h] [-n N] [--oldest TIMESTAMP] [--newest TIMESTAMP] [--site SITE] [-v] article
@@ -41,7 +44,7 @@ options:
 ```
 
 
-## Examples
+## 🤔 Examples
 
 ### Simple use
 
