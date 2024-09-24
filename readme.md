@@ -25,17 +25,18 @@ pip install mwclient
 ## Usage
 
 ```
-usage: wikiblame.py [-h] [--start START] [--end END] [--site SITE] [-v] article
+usage: wikiblame.py [-h] [--revisions N] [--oldest TIMESTAMP] [--newest TIMESTAMP] [--site SITE] [-v] article
 
 positional arguments:
   article        name of the wikipedia article
 
 options:
-  -h, --help     show this help message and exit
-  --start START  oldest revision date (default: 2022-01-01T00:00:00Z)
-  --end END      newest revision date (latest revision if not set)
-  --site SITE    wikimedia site to access (default: en.wikipedia.org)
-  -v, --verbose  show commit messages
+  -h, --help          show this help message and exit
+  --revisions N       number of revisions
+  --oldest TIMESTAMP  oldest revision, like 2022-01-01T00:00:00Z
+  --newest TIMESTAMP  newest revision (latest if not set)
+  --site SITE         wikimedia site to access (default: en.wikipedia.org)
+  -v, --verbose       show retrieved revisions
 ```
 
 
@@ -48,14 +49,15 @@ microscope](https://en.wikipedia.org/wiki/Electron_microscope):
 
 ```
 > ./wikiblame.py 'Electron microscope'
+Using last 50 revisions. Use --revisions or --oldest otherwise.
+Getting revisions of "Electron microscope" at en.wikipedia.org ...
 Initialized empty Git repository in /tmp/tmpibe68vu1/.git/
-Adding revisions...
 
 Directory with the history as a git repository: /tmp/tmpibe68vu1
-1. Open with emacs
-2. Open with git blame
-3. Open with gitg
-4. Exit (it will remove /tmp/tmpibe68vu1)
+  1. Open with emacs
+  2. Open with git blame
+  3. Open with gitg
+  4. Exit (it will remove /tmp/tmpibe68vu1)
 >
 ```
 
@@ -72,26 +74,27 @@ Example using a different starting date, verbose output, and selecting
 git blame:
 
 ```
-> ./wikiblame.py 'Electron microscope' --start 2017-01-01T00:00:00Z -v
-Initialized empty Git repository in /tmp/tmp4fp88fcy/.git/
-Adding revisions...
-[master (root-commit) 9e8ac23] hhhhhhhhhhh
- Author: 84.21.150.53 <no email>
- Date: Mon Jan 23 14:20:28 2017 +0100
- 1 file changed, 796 insertions(+)
- create mode 100644 article
-[master b97c5c7] Reverted edits by [[Special:Contribs/84.21.150.53|84.21.150.53]] ([[User talk:84.21.150.53|talk]]) to last version by Serols
- Author: Quinton Feldberg <no email>
- Date: Mon Jan 23 14:21:35 2017 +0100
- 1 file changed, 13 insertions(+), 13 deletions(-)
+> ./wikiblame.py 'Electron microscope' --oldest 2020-01-01T00:00:00Z -v
+Getting revisions of "Electron microscope" at en.wikipedia.org ...
+  Sun Sep 22 19:58:41 2024  Alfa-ketosav      /* Main operating modes */
+  Tue Aug 20 03:12:45 2024  Citation bot      Add: pmid, authors 1-1. Removed parameters. Some a
+  Thu Aug  8 04:15:15 2024  JL-Bot            removing stale construction template as last edite
+  Wed Jul 31 20:54:20 2024  SFBB              there was no TU-Berlin before 1946
+  Tue Jul 30 06:18:13 2024  Unknown cow       fix typo in word "produced"
+  Fri Jul 26 15:26:53 2024  129.7.106.20      /* Sample preparation for TEM */ formatted citatio
+  Fri Jul 19 07:40:25 2024  WikiCleanerBot    v2.05b - [[User:WikiCleanerBot#T20|Bot T20 CW#61]]
 
-[...]
+  [...]
+
+  Mon Jan 13 19:02:34 2020  Neurogeek         /* See also */  Quantum Microscopy
+  Sun Jan 12 19:38:40 2020  Needforspeed888   Add link
+Initialized empty Git repository in /tmp/tmp4fp88fcy/.git/
 
 Directory with the history as a git repository: /tmp/tmpibe68vu1
-1. Open with emacs
-2. Open with git blame
-3. Open with gitg
-4. Exit (it will remove /tmp/tmpibe68vu1)
+  1. Open with emacs
+  2. Open with git blame
+  3. Open with gitg
+  4. Exit (it will remove /tmp/tmpibe68vu1)
 > 2
 
 [...]
@@ -118,9 +121,9 @@ e7672bb2 (Materialscientist    2020-09-07 10:13:25 +0200   18) achieved better t
 [...]
 
 Directory with the history as a git repository: /tmp/tmpibe68vu1
-1. Open with emacs
-2. Open with git blame
-3. Open with gitg
-4. Exit (it will remove /tmp/tmpibe68vu1)
+  1. Open with emacs
+  2. Open with git blame
+  3. Open with gitg
+  4. Exit (it will remove /tmp/tmpibe68vu1)
 > 4
 ```

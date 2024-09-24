@@ -10,7 +10,7 @@ This is a much nicer way to find out where certain changes happened in a
 wiki page.
 """
 
-# Credits of the idea to https://gitlab.com/andreascian/mediawiki2git/
+# Credits of the idea go to https://gitlab.com/andreascian/mediawiki2git/
 
 import sys
 import time
@@ -28,20 +28,32 @@ except ModuleNotFoundError:
 def main():
     args = get_args()
 
-    revisions = mwclient.Site(args.site).Pages[args.article].revisions
+    print(f'Getting revisions of "{args.article}" at {args.site} ...')
+
+    page = mwclient.Site(args.site).Pages[args.article]
+
+    revisions = []
+    for rev in page.revisions(start=args.newest, end=args.oldest,
+                              max_items=args.revisions,
+                              prop='content|comment|user|timestamp'):
+        if args.verbose:
+            print('  %-24s  %-16s  %s' % (time.asctime(rev['timestamp']),
+                                          rev.get('user', ''),
+                                          rev.get('comment', '')[:50]))
+        revisions.append(rev)
 
     with tempfile.TemporaryDirectory() as tempdir:
+        # Init git repository.
         run(['git', 'init', '-b', 'main'], cwd=tempdir)
 
-        print('Adding revisions...')
-        for rev in revisions(start=args.start, end=args.end, dir='newer',
-                             #max_items=args.max_items,  # TODO: use correctly
-                             prop='content|comment|user|timestamp'):
+        # Add commits.
+        for rev in reversed(revisions):  # from oldest to newest
             if '*' in rev:  # key "*" is for the contents of the article
-                commit(rev, tempdir, args.verbose)
+                commit(rev, tempdir)
             else:
                 print(f'\nSkipping revision without content: {dict(rev)}\n')
 
+        # Examine the history.
         try:
             examine(tempdir)
         except FileNotFoundError as e:
@@ -55,24 +67,31 @@ def get_args():
     add = parser.add_argument
 
     add('article', help='name of the wikipedia article')
-    add('--start', default='2022-01-01T00:00:00Z', help='oldest revision date')
-    add('--end', help='newest revision date (latest revision if not set)')
-#    add('--max-items', type=int, help='maximum number of revisions') # TODO
+    add('--revisions', metavar='N', type=int, help='number of revisions')
+    add('--oldest', metavar='TIMESTAMP', help='oldest revision, like 2022-01-01T00:00:00Z')
+    add('--newest', metavar='TIMESTAMP', help='newest revision (latest if not set)')
     add('--site', default='en.wikipedia.org', help='wikimedia site to access')
-    add('-v', '--verbose', action='store_true', help='show commit messages')
+    add('-v', '--verbose', action='store_true', help='show retrieved revisions')
 
-    return parser.parse_args()
+    args = parser.parse_args()
+
+    if args.revisions is None and args.oldest is None:
+        print('Using last 50 revisions. Use --revisions or --oldest otherwise.')
+        args.revisions = 50
+
+    return args
 
 
-def commit(revision, dirname='/tmp', verbose=False):
+def commit(revision, dirname='/tmp'):
     "Add revision as a git commit in directory dirname"
     with open(dirname + '/article', 'wt') as f:
-        f.write(wrap(revision['*']))
+        text = wrap(revision['*'])
+        f.write(text)
 
     run(['git', 'add', 'article'], cwd=dirname)
 
     run(['git', 'commit',
-         '--no-quiet' if verbose else '--quiet',
+         '--quiet',
          '--no-verify',  # in case the user has pre-commit or commit-msg hooks
          '--message', revision.get('comment', '') or '<empty>',
          '--author', revision.get('user', '') + ' <no email>',
@@ -100,10 +119,10 @@ def examine(tempdir):
     print('\nDirectory with the history as a git repository:', tempdir)
 
     while True:
-        print('1. Open with emacs')
-        print('2. Open with git blame')
-        print('3. Open with gitg')
-        print('4. Exit (it will remove %s)' % tempdir)
+        print('  1. Open with emacs')
+        print('  2. Open with git blame')
+        print('  3. Open with gitg')
+        print('  4. Exit (it will remove %s)' % tempdir)
 
         answer = input('> ').strip()
 
