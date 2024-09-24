@@ -24,11 +24,24 @@ pip install mwclient
 It also uses [git](https://git-scm.com/) to create a local repository
 with one commit per revision of the article.
 
+Depending on the program you want to use to see the history of the
+file, you may want to have emacs and/or gitg too.
+
+
+## 📥 Installation
+
+You can run the `wikiblame.py` file directly, or install the
+executable `wikiblame` with:
+
+```sh
+pip install -e .
+```
+
 
 ## 📖 Usage
 
 ```
-usage: wikiblame.py [-h] [-n N] [--oldest TIMESTAMP] [--newest TIMESTAMP] [--site SITE] [-v] article
+usage: wikiblame [-h] [-n N] [--oldest TIMESTAMP] [--newest TIMESTAMP] [--site SITE] [-v] article
 
 positional arguments:
   article        name of the wikipedia article
@@ -44,7 +57,7 @@ options:
 ```
 
 
-## 🤔 Examples
+## 💡 Examples
 
 ### Simple use
 
@@ -52,7 +65,7 @@ In this example we see the history of the article on [Electron
 microscope](https://en.wikipedia.org/wiki/Electron_microscope):
 
 ```
-> ./wikiblame.py 'Electron microscope'
+> wikiblame 'Electron microscope'
 Using last 50 revisions. Use --revisions or --oldest otherwise.
 Getting revisions of "Electron microscope" at en.wikipedia.org ...
 Initialized empty Git repository in /tmp/tmpibe68vu1/.git/
@@ -78,7 +91,7 @@ Example using a different starting date, verbose output, and selecting
 git blame:
 
 ```
-> ./wikiblame.py 'Electron microscope' --oldest 2020-01-01T00:00:00Z -v
+> wikiblame 'Electron microscope' --oldest 2020-01-01T00:00:00Z -v
 Getting revisions of "Electron microscope" at en.wikipedia.org ...
   Sun Sep 22 19:58:41 2024  Alfa-ketosav      /* Main operating modes */
   Tue Aug 20 03:12:45 2024  Citation bot      Add: pmid, authors 1-1. Removed parameters. Some a
@@ -110,3 +123,9 @@ Directory with the history as a git repository: /tmp/tmpibe68vu1
   4. Exit (it will remove /tmp/tmpibe68vu1)
 > 4
 ```
+
+
+## ⚖️ License
+
+This program is licensed under the GPL v3. See the [project
+license](license.md) for further details.
