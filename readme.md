@@ -25,17 +25,18 @@ pip install mwclient
 ## Usage
 
 ```
-usage: wikiblame.py [-h] [--revisions N] [--oldest TIMESTAMP] [--newest TIMESTAMP] [--site SITE] [-v] article
+usage: wikiblame.py [-h] [-n N] [--oldest TIMESTAMP] [--newest TIMESTAMP] [--site SITE] [-v] article
 
 positional arguments:
   article        name of the wikipedia article
 
 options:
   -h, --help          show this help message and exit
+  -n N, --revisions N  number of revisions
   --revisions N       number of revisions
   --oldest TIMESTAMP  oldest revision, like 2022-01-01T00:00:00Z
   --newest TIMESTAMP  newest revision (latest if not set)
-  --site SITE         wikimedia site to access (default: en.wikipedia.org)
+  --site SITE         wikimedia site to access
   -v, --verbose       show retrieved revisions
 ```
 

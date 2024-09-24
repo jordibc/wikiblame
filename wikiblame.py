@@ -16,7 +16,7 @@ import sys
 import time
 import tempfile
 from subprocess import run, Popen
-from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter as fmt
+from argparse import ArgumentParser, RawDescriptionHelpFormatter as fmt
 
 try:
     import mwclient
@@ -67,7 +67,7 @@ def get_args():
     add = parser.add_argument
 
     add('article', help='name of the wikipedia article')
-    add('--revisions', metavar='N', type=int, help='number of revisions')
+    add('-n', '--revisions', metavar='N', type=int, help='number of revisions')
     add('--oldest', metavar='TIMESTAMP', help='oldest revision, like 2022-01-01T00:00:00Z')
     add('--newest', metavar='TIMESTAMP', help='newest revision (latest if not set)')
     add('--site', default='en.wikipedia.org', help='wikimedia site to access')
