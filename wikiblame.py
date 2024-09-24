@@ -66,11 +66,13 @@ def get_args():
     parser = ArgumentParser(description=__doc__, formatter_class=fmt)
     add = parser.add_argument
 
+    default_site = 'en.wikipedia.org'
+
     add('article', help='name of the wikipedia article')
     add('-n', '--revisions', metavar='N', type=int, help='number of revisions')
     add('--oldest', metavar='TIMESTAMP', help='oldest revision, like 2022-01-01T00:00:00Z')
     add('--newest', metavar='TIMESTAMP', help='newest revision (latest if not set)')
-    add('--site', default='en.wikipedia.org', help='wikimedia site to access')
+    add('--site', default=default_site, help=f'wikimedia site to access (default: {default_site})')
     add('-v', '--verbose', action='store_true', help='show retrieved revisions')
 
     args = parser.parse_args()
