@@ -72,7 +72,7 @@ Example using a different starting date, verbose output, and selecting
 git blame:
 
 ```
-> ./wikiblame.py 'Electron microscope' --start 2017-01-01T00:00:00Z
+> ./wikiblame.py 'Electron microscope' --start 2017-01-01T00:00:00Z -v
 Initialized empty Git repository in /tmp/tmp4fp88fcy/.git/
 Adding revisions...
 [master (root-commit) 9e8ac23] hhhhhhhhhhh
