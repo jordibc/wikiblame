@@ -9,6 +9,16 @@ This is a much nicer way to find out where certain changes happened in
 a wiki page.
 
 
+## 📥 Installation
+
+You can run the `wikiblame.py` file directly, or install the
+executable `wikiblame` with:
+
+```sh
+pip install -e .
+```
+
+
 ## 🔋 Dependencies
 
 Wikiblame uses the [mwclient](https://github.com/mwclient/mwclient)
@@ -26,16 +36,6 @@ with one commit per revision of the article.
 
 Depending on the program you want to use to see the history of the
 file, you may want to have emacs and/or gitg too.
-
-
-## 📥 Installation
-
-You can run the `wikiblame.py` file directly, or install the
-executable `wikiblame` with:
-
-```sh
-pip install -e .
-```
 
 
 ## 📖 Usage
