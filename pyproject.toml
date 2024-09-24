@@ -23,6 +23,3 @@ dependencies = ["mwclient"]
 
 [project.scripts]
 wikiblame = "wikiblame:main"
-
-[project.optional-dependencies]
-test = ["pytest>=6.0"]
