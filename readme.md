@@ -1,28 +1,43 @@
 # Wikiblame
 
-Convert a wikipedia article to a git repository and explore it with emacs in
-version control mode (vs-annotate). Optionally run gitk and git blame too.
+Convert a wikipedia article to a git repository.
 
-This is a much nicer way to find out where certain changes happened in a wiki
-page.
+Then, offer to explore it with emacs in version control mode
+(vc-annotate), or with git blame, or gitg.
+
+This is a much nicer way to find out where certain changes happened in
+a wiki page.
+
+
+## Dependencies
+
+Wikiblame uses the [mwclient](https://github.com/mwclient/mwclient)
+module to communicate with the MediaWiki API.
+
+It is packaged in most systems (for example, as `python3-mwclient` in
+Debian), but you can also install it with:
+
+```sh
+pip install mwclient
+```
 
 
 ## Usage
 
 ```
-usage: wikiblame.py [-h] [--start START] [--limit LIMIT] [--site SITE] [--gitk] [--git-blame] article
+usage: wikiblame.py [-h] [--start START] [--end END] [--site SITE] [-v] article
 
 positional arguments:
   article        name of the wikipedia article
 
-optional arguments:
+options:
   -h, --help     show this help message and exit
-  --start START  oldest revision date (default: 2019-01-01T00:00:00Z)
-  --limit LIMIT  maximum number of revisions (default: 50)
+  --start START  oldest revision date (default: 2022-01-01T00:00:00Z)
+  --end END      newest revision date (latest revision if not set)
   --site SITE    wikimedia site to access (default: en.wikipedia.org)
-  --gitk         see repository with gitk (default: False)
-  --git-blame    see history with git blame (default: False)
+  -v, --verbose  show commit messages
 ```
+
 
 ## Examples
 
@@ -33,46 +48,33 @@ microscope](https://en.wikipedia.org/wiki/Electron_microscope):
 
 ```
 > ./wikiblame.py 'Electron microscope'
-Initialized empty Git repository in /tmp/tmp7fccmxs8/.git/
-[master (root-commit) 83f5932] /* Scanning electron microscope (SEM) */ link
- Author: Iztwoz <no email>
- Date: Sun Jan 6 12:32:07 2019 +0100
- 1 file changed, 903 insertions(+)
- create mode 100644 article
-[master 20b0990] Alter: doi-broken-date. | You can [[WP:UCB|use this bot]] yourself. [[WP:DBUG|Report bugs here]]. | [[WP:UCB|User-activated]].
- Author: Citation bot <no email>
- Date: Tue Jan 8 03:31:48 2019 +0100
- 1 file changed, 2 insertions(+), 2 deletions(-)
-[master 4625c2f] [[User:JCW-CleanerBot#Logic|task]], replaced: J. Microscopy → Journal of Microscopy
- Author: JCW-CleanerBot <no email>
- Date: Fri Jan 18 02:39:15 2019 +0100
- 1 file changed, 12 insertions(+), 12 deletions(-)
+Initialized empty Git repository in /tmp/tmpibe68vu1/.git/
+Adding revisions...
 
-[...]
-
-[master 6b67d5c] Rescuing 1 sources and tagging 0 as dead.) #IABot (v2.0.8.6
- Author: InternetArchiveBot <no email>
- Date: Tue Jan 11 00:22:08 2022 +0100
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-Directory with the history as a git repository: /tmp/tmp7fccmxs8
-Press enter to remove the temporal directory...
+Directory with the history as a git repository: /tmp/tmpibe68vu1
+1. Open with emacs
+2. Open with git blame
+3. Open with gitg
+4. Exit (it will remove /tmp/tmpibe68vu1)
+>
 ```
 
-One can go into the temporary directory (`/tmp/tmp7fccmxs8` in the example)
-and use tools like [gitg](https://wiki.gnome.org/Apps/Gitg/) to quickly
-see who made what change when.
+One can run in the temporary directory (`/tmp/tmpibe68vu1` in the
+example) tools like [gitg](https://wiki.gnome.org/Apps/Gitg/) to
+quickly see who made what change when.
 
-After pressing enter on the console, the temporary directory is deleted.
+After exiting, the temporary directory is deleted.
+
 
 ### Different starting date
 
-To see it from a different starting date, and launching the gitk tool and
-seeing directly a `git blame` on the screen:
+Example using a different starting date, verbose output, and selecting
+git blame:
 
 ```
-> ./wikiblame.py 'Electron microscope' --start 2017-01-01T00:00:00Z --gitk --git-blame
+> ./wikiblame.py 'Electron microscope' --start 2017-01-01T00:00:00Z
 Initialized empty Git repository in /tmp/tmp4fp88fcy/.git/
+Adding revisions...
 [master (root-commit) 9e8ac23] hhhhhhhhhhh
  Author: 84.21.150.53 <no email>
  Date: Mon Jan 23 14:20:28 2017 +0100
@@ -82,6 +84,15 @@ Initialized empty Git repository in /tmp/tmp4fp88fcy/.git/
  Author: Quinton Feldberg <no email>
  Date: Mon Jan 23 14:21:35 2017 +0100
  1 file changed, 13 insertions(+), 13 deletions(-)
+
+[...]
+
+Directory with the history as a git repository: /tmp/tmpibe68vu1
+1. Open with emacs
+2. Open with git blame
+3. Open with gitg
+4. Exit (it will remove /tmp/tmpibe68vu1)
+> 2
 
 [...]
 
@@ -103,12 +114,13 @@ d1b67ce3 (NeedsGlasses         2020-07-23 05:06:59 +0200   13) wavelength of an 
 8bc9528b (Materialscientist    2018-11-03 09:34:47 +0100   16) microscope|light microscope]]s and can reveal the structure of
 8bc9528b (Materialscientist    2018-11-03 09:34:47 +0100   17) smaller objects. A [[scanning transmission electron microscope]] has
 e7672bb2 (Materialscientist    2020-09-07 10:13:25 +0200   18) achieved better than 50&nbsp;[[Picometre|pm]] resolution in [[annular
+
 [...]
-```
 
-And after quitting the `git blame` session:
-
-```
-Directory with the history as a git repository: /tmp/tmp4fp88fcy
-Press enter to remove the temporal directory...
+Directory with the history as a git repository: /tmp/tmpibe68vu1
+1. Open with emacs
+2. Open with git blame
+3. Open with gitg
+4. Exit (it will remove /tmp/tmpibe68vu1)
+> 4
 ```
