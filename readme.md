@@ -115,7 +115,7 @@ eb63cc02 (JackintheBox         2019-05-04 03:48:58 +0200    3) [[File:Electron M
 eb63cc02 (JackintheBox         2019-05-04 03:48:58 +0200    4) electron microscope]][[File:Electron
 [...]
 
-Directory with the history as a git repository: /tmp/tmpibe68vu1
+>
   1. Open with emacs
   2. Open with git blame
   3. Open with gitg

@@ -120,12 +120,14 @@ def examine(tempdir):
     "Ask and examine the revision history for the article in tempdir"
     print('\nDirectory with the history as a git repository:', tempdir)
 
-    while True:
-        print('  1. Open with emacs')
-        print('  2. Open with git blame')
-        print('  3. Open with gitg')
-        print('  4. Exit (it will remove %s)' % tempdir)
+    options = ('  1. Open with emacs\n'
+               '  2. Open with git blame\n'
+               '  3. Open with gitg\n'
+               '  4. Exit (it will remove %s)' % tempdir)
 
+    print(options)
+
+    while True:
         answer = input('> ').strip()
 
         if answer == '1':
@@ -140,6 +142,8 @@ def examine(tempdir):
             Popen(['gitg'], cwd=tempdir)
         elif answer == '4':
             return
+        else:
+            print(options)
 
 
 
