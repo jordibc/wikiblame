@@ -128,22 +128,25 @@ def examine(tempdir):
     print(options)
 
     while True:
-        answer = input('> ').strip()
+        option = input('> ').strip()
 
-        if answer == '1':
+        if option == '1':
             Popen(['emacs', '-eval', ('(progn'
                                       '  (find-file "article")'
                                       '  (vc-annotate "article" "HEAD")'
                                       '  (delete-other-windows))')],
                   cwd=tempdir)
-        elif answer == '2':
+        elif option == '2':
             run(['git', 'blame', 'article'], cwd=tempdir)
-        elif answer == '3':
+        elif option == '3':
             Popen(['gitg'], cwd=tempdir)
-        elif answer == '4':
+        elif option == '4':
             return
+        elif option == '':
+            pass
         else:
-            print(options)
+            print(f'Unknown option: {option}')
+            print(f'Options:\n{options}')
 
 
 
