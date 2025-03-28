@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "wikiblame"
 description = "Convert a wikipedia article to a git repository"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
   { name="Jordi Burguet-Castell", email="jordi.burguet.castell@gmail.com" },
 ]
